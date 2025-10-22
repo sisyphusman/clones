@@ -10,10 +10,12 @@ public class Spawner : MonoBehaviour
 
     int level;
     float timer;
+
     private void Awake()
     {
         spawnPoint = GetComponentsInChildren<Transform>();
     }
+
     private void Update()
     {
         timer += Time.deltaTime;
@@ -25,6 +27,7 @@ public class Spawner : MonoBehaviour
             Spawn();
         }
     }
+
     private void Spawn()
     {
        GameObject enemy = GameManager.instance.pool.Get(0);

@@ -10,6 +10,7 @@ public class Reposition : MonoBehaviour
     {
         coll = GetComponent<Collider2D>();
     }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (!collision.CompareTag("Area"))

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
@@ -16,12 +17,7 @@ public class Weapon : MonoBehaviour
 
     private void Awake()
     {
-        player = GetComponentInParent<Player>();
-    }
-
-    private void Start()
-    {
-        Init();
+        player = GameManager.instance.player;
     }
 
     private void Update()
@@ -57,10 +53,31 @@ public class Weapon : MonoBehaviour
 
         if (id == 0)
             Batch();
+
+        player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver);
     }
 
-    public void Init()
+    public void Init(ItemData data)
     {
+        // Basic Set
+        name = "Weapon " + data.itemId;
+        transform.parent = player.transform;
+        transform.localPosition = Vector3.zero;
+
+        // Property Set
+        id = data.itemId;
+        damage = data.baseDamage;
+        count = data.baseCount;
+
+        for (int index = 0; index < GameManager.instance.pool.prefabs.Length; index++)
+        {
+            if (data.projectile == GameManager.instance.pool.prefabs[index])
+            {
+                prefabid = index;
+                break;
+            }
+        }
+
         switch (id)
         {
             case 0:
@@ -71,6 +88,9 @@ public class Weapon : MonoBehaviour
                 speed = 0.3f;
                 break;
         }
+
+        // 특정 함수 호출을 모든 자식에게 방송하는 함수
+        player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver);
     }
 
     private void Batch()

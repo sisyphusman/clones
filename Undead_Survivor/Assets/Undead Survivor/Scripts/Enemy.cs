@@ -30,6 +30,9 @@ public class Enemy : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!GameManager.instance.isLive)
+            return;
+
         // Base Layer 1개이므로 0번, Hit이면 건너뜀
         if (!isLive || anim.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
             return;
@@ -42,6 +45,9 @@ public class Enemy : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (!GameManager.instance.isLive)
+            return;
+
         // 몬스터가 타켓보다 더 오른쪽에 있으면 플립
         spriter.flipX = target.position.x < rigid.position.x;
     }
